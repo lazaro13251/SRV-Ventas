@@ -7,19 +7,19 @@ spring:
     gateway:
       routes:
         - id: seguridad-svc
-          uri: http://localhost:8081
+          uri: ${URI_SEGURIDAD:http://localhost:8081}
           predicates:
             - Path=/auth/**
         - id: clientes-svc
-          uri: http://localhost:8082
+          uri: ${URI_CLIENTES:http://localhost:8082}
           predicates:
             - Path=/clientes/**
         - id: productos-svc
-          uri: http://localhost:8083
+          uri: ${URI_PRODUCTOS:http://localhost:8083}
           predicates:
             - Path=/productos/**
         - id: ventas-svc
-          uri: http://localhost:8084
+          uri: ${URI_VENTAS:http://localhost:8084}
           predicates:
             - Path=/ventas/**
 

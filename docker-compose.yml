@@ -38,10 +38,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_CLOUD_GATEWAY_ROUTES_0_URI=http://msrv-seguridad:8081
-      - SPRING_CLOUD_GATEWAY_ROUTES_1_URI=http://msrv-clientes:8082
-      - SPRING_CLOUD_GATEWAY_ROUTES_2_URI=http://msrv-productos:8083
-      - SPRING_CLOUD_GATEWAY_ROUTES_3_URI=http://msrv-ventas:8084
+      - URI_SEGURIDAD=http://msrv-seguridad:8081
+      - URI_CLIENTES=http://msrv-clientes:8082
+      - URI_PRODUCTOS=http://msrv-productos:8083
+      - URI_VENTAS=http://msrv-ventas:8084
     depends_on:
       - msrv-seguridad
       - msrv-clientes
