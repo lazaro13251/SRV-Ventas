@@ -1,0 +1,8 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: msrv-productos
+  data:
+    mongodb:
+      uri: mongodb://mongoadmin:mongosecret@localhost:27017/db_productos?authSource=admin

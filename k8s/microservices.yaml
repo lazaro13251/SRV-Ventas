@@ -1,0 +1,176 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msrv-seguridad
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msrv-seguridad
+  template:
+    metadata:
+      labels:
+        app: msrv-seguridad
+    spec:
+      containers:
+        - name: msrv-seguridad
+          image: msrv-seguridad:latest
+          imagePullPolicy: Never
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/db_seguridad
+          ports:
+            - containerPort: 8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: msrv-seguridad
+spec:
+  selector:
+    app: msrv-seguridad
+  ports:
+    - port: 8081
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msrv-clientes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msrv-clientes
+  template:
+    metadata:
+      labels:
+        app: msrv-clientes
+    spec:
+      containers:
+        - name: msrv-clientes
+          image: msrv-clientes:latest
+          imagePullPolicy: Never
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/db_clientes
+          ports:
+            - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: msrv-clientes
+spec:
+  selector:
+    app: msrv-clientes
+  ports:
+    - port: 8082
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msrv-productos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msrv-productos
+  template:
+    metadata:
+      labels:
+        app: msrv-productos
+    spec:
+      containers:
+        - name: msrv-productos
+          image: msrv-productos:latest
+          imagePullPolicy: Never
+          env:
+            - name: SPRING_DATA_MONGODB_URI
+              value: mongodb://mongoadmin:mongosecret@mongo:27017/db_productos?authSource=admin
+          ports:
+            - containerPort: 8083
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: msrv-productos
+spec:
+  selector:
+    app: msrv-productos
+  ports:
+    - port: 8083
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msrv-ventas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msrv-ventas
+  template:
+    metadata:
+      labels:
+        app: msrv-ventas
+    spec:
+      containers:
+        - name: msrv-ventas
+          image: msrv-ventas:latest
+          imagePullPolicy: Never
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/db_ventas
+          ports:
+            - containerPort: 8084
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: msrv-ventas
+spec:
+  selector:
+    app: msrv-ventas
+  ports:
+    - port: 8084
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: api-gateway:latest
+          imagePullPolicy: Never
+          env:
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
+              value: http://msrv-seguridad:8081
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_1_URI
+              value: http://msrv-clientes:8082
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_URI
+              value: http://msrv-productos:8083
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_3_URI
+              value: http://msrv-ventas:8084
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway
+spec:
+  type: LoadBalancer
+  selector:
+    app: api-gateway
+  ports:
+    - port: 8080

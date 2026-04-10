@@ -1,0 +1,14 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: msrv-ventas
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_ventas
+    username: user_ventas
+    password: password_ventas
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

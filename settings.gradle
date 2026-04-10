@@ -1,0 +1,7 @@
+rootProject.name = 'SRV-Ventas'
+
+include 'api-gateway'
+include 'msrv-seguridad'
+include 'msrv-clientes'
+include 'msrv-productos'
+include 'msrv-ventas'

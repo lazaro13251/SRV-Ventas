@@ -1,0 +1,20 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: msrv-seguridad
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_seguridad
+    username: user_ventas
+    password: password_ventas
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+jwt:
+  secret: aW52ZW50YWRvLXBvci1sYS1pbnRlbGlnZW5jaWEtYXJ0aWZpY2lhbC1xdWUtZGVtby1zZWNyZXRv

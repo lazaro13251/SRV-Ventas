@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  # PostgreSQL para auth, clientes y ventas
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: srv_ventas_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user_ventas
+      POSTGRES_PASSWORD: password_ventas
+      POSTGRES_MULTIPLE_DATABASES: "db_seguridad,db_clientes,db_ventas"
+    ports:
+      - "5433:5432" # Puerto host 5433 para evitar conflictos locales
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-multiple-postgres-databases.sh:/docker-entrypoint-initdb.d/init-multiple-postgres-databases.sh
+
+  # MongoDB para productos
+  mongo_db:
+    image: mongo:6.0
+    container_name: srv_ventas_mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: mongosecret
+      MONGO_INITDB_DATABASE: db_productos
+    ports:
+      - "27018:27017" # Puerto host 27018 para evitar conflictos locales
+    volumes:
+      - mongo_data:/data/db
+
+  # Microservicios
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_CLOUD_GATEWAY_ROUTES_0_URI=http://msrv-seguridad:8081
+      - SPRING_CLOUD_GATEWAY_ROUTES_1_URI=http://msrv-clientes:8082
+      - SPRING_CLOUD_GATEWAY_ROUTES_2_URI=http://msrv-productos:8083
+      - SPRING_CLOUD_GATEWAY_ROUTES_3_URI=http://msrv-ventas:8084
+    depends_on:
+      - msrv-seguridad
+      - msrv-clientes
+      - msrv-productos
+      - msrv-ventas
+
+  msrv-seguridad:
+    build:
+      context: .
+      dockerfile: msrv-seguridad/Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_db:5432/db_seguridad
+    depends_on:
+      - postgres_db
+
+  msrv-clientes:
+    build:
+      context: .
+      dockerfile: msrv-clientes/Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_db:5432/db_clientes
+    depends_on:
+      - postgres_db
+
+  msrv-productos:
+    build:
+      context: .
+      dockerfile: msrv-productos/Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongoadmin:mongosecret@mongo_db:27017/db_productos?authSource=admin
+    depends_on:
+      - mongo_db
+
+  msrv-ventas:
+    build:
+      context: .
+      dockerfile: msrv-ventas/Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_db:5432/db_ventas
+    depends_on:
+      - postgres_db
+      - msrv-productos
+      - msrv-clientes
+
+volumes:
+  postgres_data:
+  mongo_data:
