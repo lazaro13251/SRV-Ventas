@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: seguridad-svc
+          uri: http://localhost:8081
+          predicates:
+            - Path=/auth/**
+        - id: clientes-svc
+          uri: http://localhost:8082
+          predicates:
+            - Path=/clientes/**
+        - id: productos-svc
+          uri: http://localhost:8083
+          predicates:
+            - Path=/productos/**
+        - id: ventas-svc
+          uri: http://localhost:8084
+          predicates:
+            - Path=/ventas/**
+
+jwt:
+  secret: aW52ZW50YWRvLXBvci1sYS1pbnRlbGlnZW5jaWEtYXJ0aWZpY2lhbC1xdWUtZGVtby1zZWNyZXRv

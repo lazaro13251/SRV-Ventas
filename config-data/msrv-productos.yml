@@ -1,0 +1,7 @@
+server:
+  port: 8083
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://mongoadmin:mongosecret@localhost:27018/db_productos?authSource=admin

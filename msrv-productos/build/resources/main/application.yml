@@ -3,6 +3,5 @@ server:
 spring:
   application:
     name: msrv-productos
-  data:
-    mongodb:
-      uri: mongodb://mongoadmin:mongosecret@localhost:27017/db_productos?authSource=admin
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}

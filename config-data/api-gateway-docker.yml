@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: seguridad-svc
+          uri: http://msrv-seguridad:8081
+          predicates:
+            - Path=/auth/**
+        - id: clientes-svc
+          uri: http://msrv-clientes:8082
+          predicates:
+            - Path=/clientes/**
+        - id: productos-svc
+          uri: http://msrv-productos:8083
+          predicates:
+            - Path=/productos/**
+        - id: ventas-svc
+          uri: http://msrv-ventas:8084
+          predicates:
+            - Path=/ventas/**

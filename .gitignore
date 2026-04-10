@@ -1,0 +1,108 @@
+# ==============================
+# Java & Gradle
+# ==============================
+.gradle
+**/build/
+!src/**/build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file
+!gradle-wrapper.jar
+
+# Avoid ignore Gradle wrappper properties
+!gradle-wrapper.properties
+
+# Cache of project
+.gradletasknamecache
+
+# ==============================
+# Spring Boot
+# ==============================
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ==============================
+# IDEs
+# ==============================
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+/out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### STS ###
+.springBeans
+
+### Mac OS ###
+.DS_Store
+
+### Log file ###
+*.log
+
+### Docker ###
+# Dependiendo del proyecto, quizás no se desee versionar datos de volumén local
+# pero en este caso es buena práctica ignorarlos:
+mongo_data/
+postgres_data/
+
+# Variables de entorno y secretos locales
+.env
+*.env
+*.env.*
+
+# ==============================
+# Archivos compilados, binarios y empaquetados
+# ==============================
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# IMPORTANTE: Re-incluir el wrapper de Gradle ya que DEBE ser versionado
+!gradle/wrapper/gradle-wrapper.jar
+
+# Crash reports generados por la máquina virtual de Java
+hs_err_pid*
+
+# Archivos temporales de O.S. y editores de terminal
+*~
+*.swp
+*.swo
+.tmp
