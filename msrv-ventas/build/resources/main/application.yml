@@ -1,7 +1,0 @@
-server:
-  port: 8084
-spring:
-  application:
-    name: msrv-ventas
-  config:
-    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}

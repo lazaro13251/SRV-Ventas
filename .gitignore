@@ -1,18 +1,25 @@
 # ==============================
 # Java & Gradle
 # ==============================
-.gradle
+
+# Carpetas de caché de Gradle
+.gradle/
+
+# Carpetas de compilación (build output) de todos los submódulos
 **/build/
-!src/**/build/
+
+# Excepciones: los archivos build.gradle deben versionarse
+!**/build.gradle
+!**/build.gradle.kts
 
 # Ignore Gradle GUI config
 gradle-app.setting
 
 # Avoid ignoring Gradle wrapper jar file
-!gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
 
-# Avoid ignore Gradle wrappper properties
-!gradle-wrapper.properties
+# Avoid ignore Gradle wrapper properties
+!gradle/wrapper/gradle-wrapper.properties
 
 # Cache of project
 .gradletasknamecache
